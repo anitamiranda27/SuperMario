@@ -1,4 +1,6 @@
 import Entity from './entity.js';
+import Jump from './traits/Jump.js';
+import Velocity from './traits/Velocity.js';
 import {loadMarioSprites} from './sprites.js'
 
 export function createMario()
@@ -7,17 +9,13 @@ export function createMario()
     .then(sprite =>{
         const mario = new Entity();
         
+        mario.addTrait(new Velocity());
+        mario.addTrait(new Jump());
 
         mario.draw = function drawMario(context)
         {   
             sprite.draw('mario',context,this.pos.x,this.pos.y);
-        }
-
-        mario.update = function updateMario(deltaTime)
-        {
-            this.pos.x += this.vel.x * deltaTime;
-            this.pos.y += this.vel.y * deltaTime;
-        }
+        }       
 
         return mario;
     }); 
