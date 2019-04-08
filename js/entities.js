@@ -17,7 +17,7 @@ export function createMario()
 
         mario.draw = function drawMario(context)
         {   
-            sprite.draw('mario', context, this.pos.x, this.pos.y);
+            sprite.draw('mario', context, 0, 0);
         }       
 
         return mario;
