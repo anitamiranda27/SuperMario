@@ -1,44 +1,56 @@
-import Camera from './Camera.js';
-import Timer from './timer.js';
+import Compositor from './Compositor.js'
 import {loadLevel} from './loaders.js'
-import {createMario} from './entities.js'
-import {createCollisionLayer, createCameraLayer} from './layers.js'
-import {setupKeyboard} from './input.js'
-import {setupMouseControl} from './Debug.js'
+import {loadMarioSprites, loadBackgroundSprites} from './sprites.js'
+import {createBackgroundLayer} from './layers.js'
+
 
 const canvas = document.getElementById('screen');
 const context = canvas.getContext('2d');
 
+function createSpriteLayer(sprite, pos, name)
+{
+    return function drawSpriteLayer(context){
+        sprite.draw(name,context,pos.x,pos.y);
+    }
+}
+
 Promise.all([
-    createMario(),
+    loadMarioSprites(),
+    loadBackgroundSprites(),
     loadLevel('1-1')
 ])
-.then(([mario,level,]) => {  
-    
-    const camera = new Camera();
-    window.camera = camera;
-   
-    mario.pos.set(64,64);
+.then(([marioSprite,backgroundSprites,level,]) => {
+    const comp = new Compositor();
 
-    level.comp.layers.push(
-        createCollisionLayer(level),
-        createCameraLayer(camera));
+    const backgroundLayer = createBackgroundLayer(level.backgrounds, backgroundSprites);
+    comp.layers.push(backgroundLayer);
 
-    level.entities.add(mario);
-
-    const input = setupKeyboard(mario);
-    input.listenTo(window);
-    
-    setupMouseControl(canvas,mario,camera);
-
-    const timer = new Timer(1/60);
-        
-    timer.update = function update(deltaTime) 
-    {
-        level.update(deltaTime);
-        level.comp.draw(context, camera);
+    const pos = {
+        x: 64,
+        y: 64
     }
-    
-    timer.start();
+
+    const pos2 = {
+        x: 74,
+        y: 64,
+    }
+
+    const spriteLayer = createSpriteLayer(marioSprite,pos,'mario');
+    const spriteLayer2 = createSpriteLayer(marioSprite,pos2,'luigi');
+    comp.layers.push(spriteLayer);
+    comp.layers.push(spriteLayer2);
+
+
+    function update()
+    {
+        comp.draw(context);
+        pos.x += 2;
+        pos.y += 2;
+        pos2.x += 2;
+        pos2.y += 2;
+        requestAnimationFrame(update);
+    }
+    update();
+
 });
 

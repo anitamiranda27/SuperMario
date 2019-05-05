@@ -5,10 +5,10 @@ export default class Compositor
         this.layers = [];
     }
     
-    draw(context, camera)
+    draw(context)
     {
         this.layers.forEach(layer =>{
-            layer(context, camera);
+            layer(context);
         })
     }
 }
