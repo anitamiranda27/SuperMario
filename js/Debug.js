@@ -11,8 +11,8 @@ export function setupMouseControl (canvas, entity, camera)
                     event.offsetX + camera.pos.x, 
                     event.offsetY + camera.pos.y);
             }
-            else if( event.buttons === 2
-                && lastEvent && lastEvent.buttons === 2
+            else if( event.shiftKey && event.buttons === 1
+                && lastEvent && lastEvent.buttons === 1
                 && lastEvent.type === 'mousemove')
             {
                 camera.pos.x -= event.offsetX - lastEvent.offsetX;
