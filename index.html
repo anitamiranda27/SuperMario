@@ -1,11 +1,55 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Super Mario</title>
-        <script type="module" src="/proyecto/js/main.js"></script>
-    </head>
-    <body>
-        <canvas id = "screen" width = "640" height = "640"></canvas>
-        
-    </body>
+<head>
+    <meta name="viewport" content="user-scalable=no" />
+    
+    <title>Super Mario</title>
+    <link rel='icon' href = './img/favicon.png' type ='image/x-icon'/>
+    <style>
+        body {
+            background: #000;
+            margin: 0;
+        }
+
+        #screen {
+            display: block;
+            image-rendering: pixelated;
+            height: 60vh;
+            margin: auto;
+        }
+
+    </style>
+    <script type="module" src="./js/main.js"></script>
+</head>
+<body>
+    <p style="color:white;">Control de Música: </p>
+    <script src="./howler.core.js"></script>
+    <div id = botones>
+            <button id='howler-play'>Play</button>
+            <button id='howler-pause'>Pause</button>
+            <button id='howler-stop'>Stop</button>
+            <button id='howler-volup'>Vol +</button>
+            <button id='howler-voldown'>Vol -</button>
+    </div>
+    <script type="module" src="./js/sound.js"></script>
+
+    <h5 style="color:white;">CONTROLES: W (saltar), D (derecha), A (izquierda)         
+    </br> Mantén la tecla "SPACE/ESPACIO" para el Turbo 
+    </br> Presiona la tecla "P" para PAUSAR / QUITAR PAUSA
+    </h5> 
+    <input type="button" value="Reiniciar" onclick= "reload()"/>
+    
+    <script>
+        function reload()
+        {
+            location.reload();
+        }
+    </script>
+    <div align="center"><img id="imagen" src="./img/negro.jpg" height = 40 width = 275/></div>
+
+    <br>    
+    
+    <canvas id="screen" width="256" height="240" ></canvas>
+
+</body>
 </html>

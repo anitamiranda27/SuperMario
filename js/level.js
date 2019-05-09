@@ -1,32 +1,36 @@
-import Compositor from './Compositor.js'
-import {Matrix} from './math.js'
-import TileColider from './tileColider.js'
+import Compositor from './Compositor.js';
+import EntityCollider from './EntityCollider.js';
+import TileCollider from './TileCollider.js';
 
-export default class Level
-{
-    constructor()
-    {
-        this.gravity = 2000;
+export default class Level {
+    constructor() {
+        this.gravity = 1500;
+        this.totalTime = 0;
 
         this.comp = new Compositor();
         this.entities = new Set();
-        this.tiles = new Matrix();
 
-        this.tileColider = new TileColider(this.tiles);
+        this.entityCollider = new EntityCollider(this.entities);
+        this.tileCollider = null;
     }
 
-    update(deltaTime)
-    {
+    setCollisionGrid(matrix) {
+        this.tileCollider = new TileCollider(matrix);
+    }
+
+    update(deltaTime) {
         this.entities.forEach(entity => {
-            entity.update(deltaTime);
-
-            entity.pos.x += entity.vel.x * deltaTime;
-            this.tileColider.checkX(entity);
-            
-            entity.pos.y += entity.vel.y * deltaTime;
-            this.tileColider.checkY(entity);
-
-            entity.vel.y += this.gravity * deltaTime;
+            entity.update(deltaTime, this);
         });
+
+        this.entities.forEach(entity => {
+            this.entityCollider.check(entity);
+        });
+
+        this.entities.forEach(entity => {
+            entity.finalize();
+        });
+
+        this.totalTime += deltaTime;
     }
 }

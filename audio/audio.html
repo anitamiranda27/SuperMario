@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"> 
+		<script>
+			
+			loadAudio("./supermario.opus").then(audio => audio.play());
+			
+			function loadAudio(url){
+				var audio = document.createElement("audio");
+				
+				return new Promise(resolve => {
+					
+					audio.src = url;
+					
+					audio.addEventListener('canplaythrough',() => {
+						resolve(audio);
+					});
+					
+				});
+			}
+			
+		</script>
+	</head>
+	<body>
+		
+	</body>
+</html>
